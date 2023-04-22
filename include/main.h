@@ -5,6 +5,7 @@
 #include "usart.h"
 #include "parser.h"
 #include "motor.h"
+#include "imu.h"
 
 #include <RP2040_PWM.h>
 

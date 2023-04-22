@@ -5,7 +5,7 @@
 #define BUFFER_SIZE                     (128)
 
 //! Use csum
-#define USE_CSUM                        (0)
+#define USE_CSUM                        (1)
 
 //! Spew debug of parser.
 #define SPEW_DEBUG_PARSER               (0)
@@ -24,5 +24,10 @@
 #define PIN_motorL                      (0)
 //! PWM PIN for Motor L
 #define PIN_motorR                      (1)
+
+//! MPU9250 PIN for SDA
+#define MPU9250_SDA                     (4)
+//! MPU9250 PIN for SCL
+#define MPU9250_SCL                     (5)
 
 #endif
