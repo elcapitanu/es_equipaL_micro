@@ -143,8 +143,6 @@ void parse_info(char *text)
 
 void send_data()
 {
-  get_values();
-
   if (isToSendData)
   {
     memset(&text_tx, '\0', sizeof(text_tx));
@@ -167,6 +165,15 @@ void send_data()
 
     memset(&text_tx, '\0', sizeof(text_tx));
     sprintf(text_tx, "$MAG,%f,%f,%f,*", m_asv_data.magX, m_asv_data.magY, m_asv_data.magZ);
+    usart_send_string(text_tx);
+#if USE_CSUM
+    usart_send_char(usart_CRC8(text_tx));
+#endif
+    usart_send_char('\n');
+    delay(2);
+
+    memset(&text_tx, '\0', sizeof(text_tx));
+    sprintf(text_tx, "$YPR,%f,%f,%f,*", m_asv_data.yaw, m_asv_data.pitch, m_asv_data.roll);
     usart_send_string(text_tx);
 #if USE_CSUM
     usart_send_char(usart_CRC8(text_tx));

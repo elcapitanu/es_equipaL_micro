@@ -13,6 +13,7 @@ struct ASV_data
     float accelX, accelY, accelZ;
     float gyroX, gyroY, gyroZ;
     float magX, magY, magZ;
+    float yaw, pitch, roll;
     float temp;
     //other sensors...
 };

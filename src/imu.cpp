@@ -23,23 +23,18 @@ void get_mpu9250()
 {
     if (mpu.update())
     {
-        static uint32_t prev_ms = millis();
-        if (millis() > prev_ms + 25)
-        {
-            print_roll_pitch_yaw();
-            prev_ms = millis();
-        }
-    }
-}
+        m_asv_data.accelX = mpu.getAccX();
+        m_asv_data.accelY = mpu.getAccY();
+        m_asv_data.accelZ = mpu.getAccZ();
+        
+        m_asv_data.gyroX = mpu.getGyroX();
+        m_asv_data.gyroY = mpu.getGyroY();
+        m_asv_data.gyroZ = mpu.getGyroZ();
 
-void print_roll_pitch_yaw()
-{
-    Serial.print("Yaw, Pitch, Roll: ");
-    Serial.print(mpu.getYaw(), 2);
-    Serial.print(", ");
-    Serial.print(mpu.getPitch(), 2);
-    Serial.print(", ");
-    Serial.print(mpu.getRoll(), 2);
-    Serial.print("  |  Temp: ");
-    Serial.println(mpu.getTemperature(), 2);
+        m_asv_data.yaw = mpu.getYaw();
+        m_asv_data.pitch = mpu.getPitch();
+        m_asv_data.roll = mpu.getRoll();
+
+        m_asv_data.temp = mpu.getTemperature();
+    }
 }

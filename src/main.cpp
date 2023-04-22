@@ -5,6 +5,8 @@ unsigned long int t, n;
 void setup()
 {
   Serial.begin(115200);
+  while(!Serial)
+    delay(100);
 
   pinMode(TX_LED, OUTPUT);
 
@@ -19,6 +21,8 @@ void loop()
   n = millis();
 
   parser(Serial.read());
+
+  get_values();
 
   if ((n - t) >= 200)
   {
