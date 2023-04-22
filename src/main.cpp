@@ -5,12 +5,15 @@ unsigned long int t, n;
 void setup()
 {
   Serial.begin(115200);
-  while(!Serial)
+  while (!Serial)
     delay(100);
 
   pinMode(TX_LED, OUTPUT);
 
+#if USE_MPU9250
   init_mpu9250();
+#endif
+
   init_motors();
 
   t = millis();
@@ -24,7 +27,7 @@ void loop()
 
   get_values();
 
-  if ((n - t) >= 200)
+  if ((n - t) >= 100)
   {
     digitalWrite(TX_LED, HIGH);
     send_data();

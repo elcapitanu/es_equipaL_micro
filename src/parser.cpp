@@ -131,12 +131,12 @@ void parse_info(char *text)
     if (strcmp(motor, "L") == 0)
     {
       if (perc <= 100 && perc >= -100)
-        ASVmotors.pwmL = (float)perc/40.0f + 7.5f;
+        ASVmotors.pwmL = (float)perc / 40.0f + 7.5f;
     }
     else if (strcmp(motor, "R") == 0)
     {
       if (perc <= 100 && perc >= -100)
-        ASVmotors.pwmR = (float)perc/40.0f + 7.5f;
+        ASVmotors.pwmR = (float)perc / 40.0f + 7.5f;
     }
   }
 }
@@ -145,6 +145,7 @@ void send_data()
 {
   if (isToSendData)
   {
+#if USE_MPU9250
     memset(&text_tx, '\0', sizeof(text_tx));
     sprintf(text_tx, "$ACCEL,%f,%f,%f,*", m_asv_data.accelX, m_asv_data.accelY, m_asv_data.accelZ);
     usart_send_string(text_tx);
@@ -189,5 +190,6 @@ void send_data()
 #endif
     usart_send_char('\n');
     delay(2);
+#endif
   }
 }

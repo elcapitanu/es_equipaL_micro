@@ -4,8 +4,10 @@
 //! Buffer sizes.
 #define BUFFER_SIZE                     (128)
 
-//! Use csum
+//! Use CSUM
 #define USE_CSUM                        (1)
+//! Use MPU9250
+#define USE_MPU9250                     (0)
 
 //! Spew debug of parser.
 #define SPEW_DEBUG_PARSER               (0)
