@@ -19,8 +19,8 @@
 //! Firmware's patch level.
 #define DEV_PAT                         (0)
 
-//! LED PIN for tx feedback (led is on while TX is being used)
-#define TX_LED                          (25)
+//! LED PIN for Debug
+#define DEBUG_LED                       (0)
 
 //! PWM PIN for Motor R
 #define PIN_motorL                      (0)

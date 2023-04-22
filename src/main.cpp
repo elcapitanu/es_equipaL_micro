@@ -8,7 +8,9 @@ void setup()
   while (!Serial)
     delay(100);
 
-  pinMode(TX_LED, OUTPUT);
+#if DEBUGF_LED
+  pinMode(DEBUG_LED, OUTPUT);
+#endif
 
 #if USE_MPU9250
   init_mpu9250();
@@ -29,9 +31,13 @@ void loop()
 
   if ((n - t) >= 100)
   {
-    digitalWrite(TX_LED, HIGH);
+#if DEBUGF_LED
+    digitalWrite(DEBUG_LED, HIGH);
+#endif
     send_data();
-    digitalWrite(TX_LED, LOW);
+#if DEBUGF_LED
+    digitalWrite(DEBUG_LED, LOW);
+#endif
     t = millis();
   }
 
