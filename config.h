@@ -5,7 +5,7 @@
 #define BUFFER_SIZE                     (128)
 
 //! Use csum
-#define USE_CSUM                        (1)
+#define USE_CSUM                        (0)
 
 //! Spew debug of parser.
 #define SPEW_DEBUG_PARSER               (0)

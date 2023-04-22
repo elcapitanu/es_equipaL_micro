@@ -1,5 +1,7 @@
 #include "imu.h"
 
+MPU9250 mpu;
+
 void init_mpu9250()
 {
     Wire.setSDA(MPU9250_SDA);
