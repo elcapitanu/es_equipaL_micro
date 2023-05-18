@@ -11,4 +11,9 @@
 #include "imu.h"
 #include "asv.h"
 
+extern bool connectedMPU;
+
+bool isMPUconnected();
+void lostMPU();
+
 #endif

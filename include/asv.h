@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 
+#include "main.h"
 #include "imu.h"
 
 #include "../config.h"

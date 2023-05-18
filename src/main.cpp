@@ -2,6 +2,19 @@
 
 unsigned long int t, n;
 
+bool connectedMPU = false;
+
+bool isMPUconnected()
+{
+  return connectedMPU;
+}
+
+void lostMPU()
+{
+  connectedMPU = !connectedMPU;
+  return;
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -13,7 +26,7 @@ void setup()
 #endif
 
 #if USE_MPU9250
-  init_mpu9250();
+  connectedMPU = init_mpu9250();
 #endif
 
   init_motors();
@@ -23,21 +36,26 @@ void setup()
 
 void loop()
 {
+  connectedMPU = mpu.isConnectedMPU9250();
+
   n = millis();
 
   parser(Serial.read());
 
   get_values();
 
-  if ((n - t) >= 100)
+  if ((n - t) >= 1000)
   {
 #if DEBUGF_LED
     digitalWrite(DEBUG_LED, HIGH);
 #endif
+
     send_data();
+
 #if DEBUGF_LED
     digitalWrite(DEBUG_LED, LOW);
 #endif
+
     t = millis();
   }
 

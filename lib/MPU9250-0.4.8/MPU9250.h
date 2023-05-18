@@ -970,7 +970,7 @@ private:
         wire->write(subAddress);             // Put slave register address in Tx buffer
         wire->write(data);                   // Put data in Tx buffer
         i2c_err_ = wire->endTransmission();  // Send the Tx buffer
-        if (i2c_err_) print_i2c_error();
+        //if (i2c_err_) print_i2c_error();
     }
 
     uint8_t read_byte(uint8_t address, uint8_t subAddress) {
@@ -978,7 +978,7 @@ private:
         wire->beginTransmission(address);         // Initialize the Tx buffer
         wire->write(subAddress);                  // Put slave register address in Tx buffer
         i2c_err_ = wire->endTransmission(false);  // Send the Tx buffer, but send a restart to keep connection alive
-        if (i2c_err_) print_i2c_error();
+        //if (i2c_err_) print_i2c_error();
         wire->requestFrom(address, (size_t)1);       // Read one byte from slave register address
         if (wire->available()) data = wire->read();  // Fill Rx buffer with result
         return data;                                 // Return data read from slave register
@@ -988,7 +988,7 @@ private:
         wire->beginTransmission(address);         // Initialize the Tx buffer
         wire->write(subAddress);                  // Put slave register address in Tx buffer
         i2c_err_ = wire->endTransmission(false);  // Send the Tx buffer, but send a restart to keep connection alive
-        if (i2c_err_) print_i2c_error();
+        //if (i2c_err_) print_i2c_error();
         uint8_t i = 0;
         wire->requestFrom(address, count);  // Read bytes from slave register address
         while (wire->available()) {

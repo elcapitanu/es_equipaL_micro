@@ -2,34 +2,35 @@
 #define CONFIG_H
 
 //! Buffer sizes.
-#define BUFFER_SIZE                     (128)
+#define BUFFER_SIZE (128)
 
 //! Use CSUM
-#define USE_CSUM                        (1)
+#define USE_CSUM (0)
 //! Use MPU9250
-#define USE_MPU9250                     (0)
+#define USE_MPU9250 (1)
 
 //! Spew debug of parser.
-#define SPEW_DEBUG_PARSER               (0)
+#define SPEW_DEBUG_PARSER (0)
 
 //! Firmware's major version number.
-#define DEV_VER                         (1)
+#define DEV_VER (1)
 //! Firmware's revision number.
-#define DEV_REV                         (0)
+#define DEV_REV (0)
 //! Firmware's patch level.
-#define DEV_PAT                         (0)
+#define DEV_PAT (0)
 
 //! LED PIN for Debug
-#define DEBUG_LED                       (0)
+#define DEBUG_LED (0)
 
 //! PWM PIN for Motor R
-#define PIN_motorL                      (0)
+#define PIN_motorL (0)
 //! PWM PIN for Motor L
-#define PIN_motorR                      (1)
+#define PIN_motorR (1)
 
 //! MPU9250 PIN for SDA
-#define MPU9250_SDA                     (4)
+#define MPU9250_SDA (4)
 //! MPU9250 PIN for SCL
-#define MPU9250_SCL                     (5)
+#define MPU9250_SCL (5)
+
 
 #endif
