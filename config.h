@@ -5,7 +5,7 @@
 #define BUFFER_SIZE (128)
 
 //! Use CSUM
-#define USE_CSUM (0)
+#define USE_CSUM (1)
 //! Use MPU9250
 #define USE_MPU9250 (1)
 
