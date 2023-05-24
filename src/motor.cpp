@@ -16,6 +16,13 @@ void init_motors()
 
 void actuate_motors()
 {
+#if PWM_DEBUG
+    Serial.print("PWM L: ");
+    Serial.print(ASVmotors.pwmL);
+    Serial.print("| PWM R: ");
+    Serial.println(ASVmotors.pwmR);
+#endif
+
     PWM_motorL->setPWM(PIN_motorL, 50, ASVmotors.pwmL);
     PWM_motorR->setPWM(PIN_motorR, 50, ASVmotors.pwmR);
 }

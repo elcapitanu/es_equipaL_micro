@@ -10,7 +10,7 @@
 
 struct ASV_data
 {
-    // MPU9250
+    // IMU
     float accelX, accelY, accelZ;
     float gyroX, gyroY, gyroZ;
     float magX, magY, magZ;

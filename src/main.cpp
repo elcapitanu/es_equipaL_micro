@@ -2,16 +2,16 @@
 
 unsigned long int t, n;
 
-bool connectedMPU = false;
+bool connectedIMU = false;
 
-bool isMPUconnected()
+bool isIMUconnected()
 {
-  return connectedMPU;
+  return connectedIMU;
 }
 
-void lostMPU()
+void lostIMU()
 {
-  connectedMPU = !connectedMPU;
+  connectedIMU = !connectedIMU;
   return;
 }
 
@@ -25,8 +25,8 @@ void setup()
   pinMode(DEBUG_LED, OUTPUT);
 #endif
 
-#if USE_MPU9250
-  connectedMPU = init_mpu9250();
+#if USE_IMU
+  connectedIMU = init_imu();
 #endif
 
   init_motors();
@@ -36,8 +36,6 @@ void setup()
 
 void loop()
 {
-  connectedMPU = mpu.isConnectedMPU9250();
-
   n = millis();
 
   parser(Serial.read());

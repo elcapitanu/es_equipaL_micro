@@ -3,16 +3,16 @@
 
 #include <Arduino.h>
 
-#include "MPU9250.h"
+#include "ICM_20948.h"
 
 #include "main.h"
 #include "asv.h"
 
 #include "../config.h"
 
-extern MPU9250 mpu;
+extern ICM_20948_I2C myICM;
 
-bool init_mpu9250();
-void get_mpu9250();
+bool init_imu();
+void get_imu();
 
 #endif

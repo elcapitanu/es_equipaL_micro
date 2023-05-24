@@ -6,8 +6,8 @@
 
 //! Use CSUM
 #define USE_CSUM (1)
-//! Use MPU9250
-#define USE_MPU9250 (1)
+//! Use IMU
+#define USE_IMU (1)
 
 //! Spew debug of parser.
 #define SPEW_DEBUG_PARSER (0)
@@ -26,11 +26,14 @@
 #define PIN_motorL (0)
 //! PWM PIN for Motor L
 #define PIN_motorR (1)
+//! PWM DEBUG
+#define PWM_DEBUG (0)
 
-//! MPU9250 PIN for SDA
-#define MPU9250_SDA (4)
-//! MPU9250 PIN for SCL
-#define MPU9250_SCL (5)
-
+//! IMU PIN for SDA
+#define IMU_SDA (4)
+//! IMU PIN for SCL
+#define IMU_SCL (5)
+//! IMU DEBUG
+#define IMU_DEBUG (0)
 
 #endif

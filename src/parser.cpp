@@ -144,9 +144,9 @@ void send_data()
 {
   if (isToSendData)
   {
-    if (isMPUconnected())
+    if (isIMUconnected())
     {
-#if USE_MPU9250
+#if USE_IMU
       memset(&text_tx, '\0', sizeof(text_tx));
       sprintf(text_tx, "$ACCEL,%f,%f,%f,*", m_asv_data.accelX, m_asv_data.accelY, m_asv_data.accelZ);
       usart_send_string(text_tx);
@@ -196,7 +196,7 @@ void send_data()
     else
     {
       memset(&text_tx, '\0', sizeof(text_tx));
-      sprintf(text_tx, "$MPU,0,*");
+      sprintf(text_tx, "$IMU,0,*");
       usart_send_string(text_tx);
 #if USE_CSUM
       usart_send_char(usart_CRC8(text_tx));

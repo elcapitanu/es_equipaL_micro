@@ -1,79 +1,106 @@
 #include "imu.h"
 
-MPU9250 mpu;
+ICM_20948_I2C myICM;
 
-#define mpu_filter 100
-
-int mpu_iter = 0;
-
-struct mpu_data
+bool init_imu()
 {
-    float accelX_acc, accelY_acc, accelZ_acc;
-    float gyroX_acc, gyroY_acc, gyroZ_acc;
-    float magX_acc, magY_acc, magZ_acc;
-    float yaw_acc, pitch_acc, roll_acc;
-    float temp_acc;
-};
-
-struct mpu_data mpu_acc = {};
-
-bool init_mpu9250()
-{
-    Wire.setSDA(MPU9250_SDA);
-    Wire.setSCL(MPU9250_SCL);
+    Wire.setSDA(IMU_SDA);
+    Wire.setSCL(IMU_SCL);
     Wire.begin();
+    Wire.setClock(400000);
     delay(50);
 
-    return mpu.setup(0x68);
+#if IMU_DEBUG
+    myICM.enableDebugging();
+#endif
+
+    bool initialized = false;
+    while (!initialized)
+    {
+        myICM.begin(Wire, 1);
+
+        if (myICM.status != ICM_20948_Stat_Ok)
+        {
+            delay(500);
+        }
+        else
+        {
+            initialized = true;
+        }
+    }
+
+    bool success = true;
+    success &= (myICM.initializeDMP() == ICM_20948_Stat_Ok);
+    success &= (myICM.enableDMPSensor(INV_ICM20948_SENSOR_GAME_ROTATION_VECTOR) == ICM_20948_Stat_Ok);
+    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Quat6, 0) == ICM_20948_Stat_Ok); // Set to the maximum
+    success &= (myICM.enableFIFO() == ICM_20948_Stat_Ok);
+    success &= (myICM.enableDMP() == ICM_20948_Stat_Ok);
+    success &= (myICM.resetDMP() == ICM_20948_Stat_Ok);
+    success &= (myICM.resetFIFO() == ICM_20948_Stat_Ok);
+
+    if (success)
+        connectedIMU = true;
+
+    return connectedIMU;
 }
 
-void get_mpu9250()
+void get_imu()
 {
-    if (mpu.update())
+    icm_20948_DMP_data_t data;
+    myICM.readDMPdataFromFIFO(&data);
+
+    if ((myICM.status == ICM_20948_Stat_Ok) || (myICM.status == ICM_20948_Stat_FIFOMoreDataAvail))
     {
-        mpu_iter++;
-
-        mpu_acc.accelX_acc += mpu.getAccX();
-        mpu_acc.accelY_acc += mpu.getAccY();
-        mpu_acc.accelZ_acc += mpu.getAccZ();
-
-        mpu_acc.gyroX_acc += mpu.getGyroX();
-        mpu_acc.gyroY_acc += mpu.getGyroY();
-        mpu_acc.gyroZ_acc += mpu.getGyroZ();
-
-        mpu_acc.magX_acc += mpu.getMagX();
-        mpu_acc.magY_acc += mpu.getMagY();
-        mpu_acc.magZ_acc += mpu.getMagZ();
-
-        mpu_acc.yaw_acc += mpu.getYaw();
-        mpu_acc.pitch_acc += mpu.getPitch();
-        mpu_acc.roll_acc += mpu.getRoll();
-
-        mpu_acc.temp_acc += mpu.getTemperature();
-
-        if (mpu_iter >= mpu_filter)
+        if ((data.header & DMP_header_bitmap_Quat6) > 0)
         {
-            mpu_iter = 0;
+            double q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0;
+            double q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0;
+            double q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0;
 
-            m_asv_data.accelX = mpu_acc.accelX_acc / mpu_filter;
-            m_asv_data.accelY = mpu_acc.accelY_acc / mpu_filter;
-            m_asv_data.accelZ = mpu_acc.accelZ_acc / mpu_filter;
+            double q0 = sqrt(1.0 - ((q1 * q1) + (q2 * q2) + (q3 * q3)));
 
-            m_asv_data.gyroX = mpu_acc.gyroX_acc / mpu_filter;
-            m_asv_data.gyroY = mpu_acc.gyroY_acc / mpu_filter;
-            m_asv_data.gyroZ = mpu_acc.gyroZ_acc / mpu_filter;
+            double q2sqr = q2 * q2;
 
-            m_asv_data.magX = mpu_acc.magX_acc / mpu_filter;
-            m_asv_data.magY = mpu_acc.magY_acc / mpu_filter;
-            m_asv_data.magZ = mpu_acc.magZ_acc / mpu_filter;
+            // roll (x-axis rotation)
+            double t0 = +2.0 * (q0 * q1 + q2 * q3);
+            double t1 = +1.0 - 2.0 * (q1 * q1 + q2sqr);
+            double roll = atan2(t0, t1) * 180.0 / PI;
 
-            m_asv_data.yaw = mpu_acc.yaw_acc / mpu_filter;
-            m_asv_data.pitch = mpu_acc.pitch_acc / mpu_filter;
-            m_asv_data.roll = mpu_acc.roll_acc / mpu_filter;
+            // pitch (y-axis rotation)
+            double t2 = +2.0 * (q0 * q2 - q3 * q1);
+            t2 = t2 > 1.0 ? 1.0 : t2;
+            t2 = t2 < -1.0 ? -1.0 : t2;
+            double pitch = asin(t2) * 180.0 / PI;
 
-            m_asv_data.temp = mpu_acc.temp_acc / mpu_filter;
+            // yaw (z-axis rotation)
+            double t3 = +2.0 * (q0 * q3 + q1 * q2);
+            double t4 = +1.0 - 2.0 * (q2sqr + q3 * q3);
+            double yaw = atan2(t3, t4) * 180.0 / PI;
 
-            mpu_acc = {};
+            m_asv_data.yaw = yaw;
+            m_asv_data.pitch = pitch;
+            m_asv_data.roll = roll;
+
+            myICM.getAGMT();
+
+            m_asv_data.accelX = myICM.accX();
+            m_asv_data.accelY = myICM.accY();
+            m_asv_data.accelZ = myICM.accZ();
+
+            m_asv_data.gyroX = myICM.gyrX();
+            m_asv_data.gyroY = myICM.gyrY();
+            m_asv_data.gyroZ = myICM.gyrZ();
+
+            m_asv_data.magX = myICM.magX();
+            m_asv_data.magY = myICM.magY();
+            m_asv_data.magZ = myICM.magZ();
+
+            m_asv_data.temp = myICM.temp();
         }
+    }
+
+    if (myICM.status != ICM_20948_Stat_FIFOMoreDataAvail)
+    {
+        delay(10);
     }
 }
