@@ -10,6 +10,11 @@ unsigned long startTime = 0;
 unsigned long t = 0;
 float valorDesejadoL = 0;
 float valorDesejadoR = 0;
+float pause_in_inversion = 300;
+float start_pauseL = 0;
+float start_pauseR = 0;
+boolean stopL = false;
+boolean stopR = false;
 
 boolean auxL = false;
 boolean auxR = false;
@@ -24,8 +29,8 @@ void setup() {
   PWM_motorR = new RP2040_PWM(PIN_motorR, 50, 0);
   PWM_motorL->setPWM(PIN_motorL, 50, 7.5);
   PWM_motorR->setPWM(PIN_motorR, 50, 7.5);
-  ASVmotors.pwmL = 0;
-  ASVmotors.pwmR = 0;
+  ASVmotors.pwmL = 80;
+  ASVmotors.pwmR = 90;
   t = millis();
   delay(5000);
 }
@@ -49,17 +54,31 @@ void loop() {
   
   // Verificar se os valores dos motores precisam ser ajustados
   if (ASVmotors.pwmL != valorDesejadoL) {
-    if (startTimeL == 0) {
+    if(startTimeL == 0) {
       startTimeL = currentTime;
+    }
+    
+    if (valorDesejadoL > 49 && valorDesejadoL < 51 && stopL == false) {
+      stopL = true;
+      start_pauseL = currentTime;
+      valorDesejadoL = 50;
+    }    
+
+    unsigned long elapsedTime_pauseL = currentTime - start_pauseL;
+
+    if(stopL == true && elapsedTime_pauseL > pause_in_inversion) {
+      stopL = false;
+      startTimeL = currentTime;
+      valorDesejadoL = 51.1;
     }
 
     unsigned long elapsedTime = currentTime - startTimeL;
 
-    if (elapsedTime <= 500) {
+    if (elapsedTime <= 500 && stopL == false) {
       float percentComplete = static_cast<float>(elapsedTime) / 500.0;
       float incrementoL = percentComplete * percentComplete * (ASVmotors.pwmL - valorDesejadoL);
       valorDesejadoL += incrementoL;
-    } else {
+    } else if(stopL == false){
       valorDesejadoL = ASVmotors.pwmL;
       startTimeL = 0;
     }
@@ -80,13 +99,27 @@ void loop() {
       startTimeR = currentTime;
     }
 
+    if (valorDesejadoR > 49 && valorDesejadoR < 51 && stopR == false) {
+      stopR = true;
+      start_pauseR = currentTime;
+      valorDesejadoR = 50;
+    }    
+
+    unsigned long elapsedTime_pauseR = currentTime - start_pauseR;
+
+    if(stopR == true && elapsedTime_pauseR > pause_in_inversion) {
+      stopR = false;
+      startTimeR = currentTime;
+      valorDesejadoR = 51.1;
+    }
+
     unsigned long elapsedTime = currentTime - startTimeR;
 
-    if (elapsedTime <= 500) {
+    if (elapsedTime <= 500 && stopR == false) {
       float percentComplete = static_cast<float>(elapsedTime) / 500.0;
       float incrementoR = percentComplete * percentComplete * (ASVmotors.pwmR - valorDesejadoR);
       valorDesejadoR += incrementoR;
-    } else {
+    } else if(stopR == false){
       valorDesejadoR = ASVmotors.pwmR;
       startTimeR = 0;
     }
