@@ -29,8 +29,8 @@ void setup() {
   PWM_motorR = new RP2040_PWM(PIN_motorR, 50, 0);
   PWM_motorL->setPWM(PIN_motorL, 50, 7.5);
   PWM_motorR->setPWM(PIN_motorR, 50, 7.5);
-  ASVmotors.pwmL = 80;
-  ASVmotors.pwmR = 90;
+  ASVmotors.pwmL = 0;
+  ASVmotors.pwmR = 0;
   t = millis();
   delay(5000);
 }
@@ -87,11 +87,11 @@ void loop() {
     float mappedValueL = map(valorDesejadoL, -100.0, 100.0, 5.5, 9.5);
     // Ativar o motor L com o valor mapeado
     PWM_motorL->setPWM(PIN_motorL, 50, mappedValueL);
-    Serial.print("Motor Esquerdo \n");
+    /*Serial.print("Motor Esquerdo \n");
     Serial.print(startTimeL, 3);
     Serial.print(", ");
     Serial.print(valorDesejadoL, 3);
-    Serial.print("\n");
+    Serial.print("\n");*/
   }
 
   if (ASVmotors.pwmR != valorDesejadoR) {
@@ -128,11 +128,11 @@ void loop() {
     float mappedValueR = map(valorDesejadoR, -100.0, 100.0, 5.5, 9.5);
     // Ativar o motor R com o valor mapeado
     PWM_motorR->setPWM(PIN_motorR, 50, mappedValueR);    
-    Serial.print("Motor Direito \n");
+    /*Serial.print("Motor Direito \n");
     Serial.print(startTimeR, 3);
     Serial.print(", ");
     Serial.print(valorDesejadoR, 3);
-    Serial.print("\n");
+    Serial.print("\n");*/
   }
 
   // Outro código de processamento aqui
