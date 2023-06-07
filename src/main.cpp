@@ -32,21 +32,12 @@ void setup() {
   ASVmotors.pwmL = 0;
   ASVmotors.pwmR = 0;
   t = millis();
-  delay(5000);
+  //delay(5000);
 }
 
 void loop() {
   
   parser(Serial.read());
-
-  /*if(auxL = false) {
-    timeL = abs(ASVmotors.pwmL * 500 / 100);
-    auxL = true;
-  }
-  if(auxR = false) {
-    timeR = abs(ASVmotors.pwmR * 500 / 100);
-    auxR = true;
-  }*/
 
   static unsigned long startTimeL = 0;
   static unsigned long startTimeR = 0;
