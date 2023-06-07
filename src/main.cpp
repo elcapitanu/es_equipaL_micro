@@ -32,7 +32,7 @@ void setup() {
   ASVmotors.pwmL = 0;
   ASVmotors.pwmR = 0;
   t = millis();
-  delay(5000);
+  //delay(5000);
 }
 
 void loop() {
