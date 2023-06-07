@@ -8,7 +8,7 @@ RP2040_PWM* PWM_motorR;
 // Variáveis para controle da transição progressiva
 unsigned long startTime = 0;
 unsigned long t = 0;
-float valorDesejadoL = 100;
+float valorDesejadoL = 0;
 float valorDesejadoR = 0;
 float pause_in_inversion = 300;
 float start_pauseL = 0;
