@@ -11,6 +11,15 @@
 #include "imu.h"
 #include "asv.h"
 
+typedef enum
+{
+    ERROR = 0,
+    READY = 1,
+    SERVICE = 2
+} m_state;
+
+extern int state;
+
 extern bool connectedIMU;
 
 bool isIMUconnected();

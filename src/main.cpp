@@ -2,6 +2,8 @@
 
 unsigned long int t, n;
 
+int state = ERROR;
+
 bool connectedIMU = false;
 
 bool isIMUconnected()
@@ -30,36 +32,43 @@ void setup()
   init_motors();
 
   t = millis();
+
+  state = READY;
 }
 
 void loop()
 {
-  n = millis();
-
-  parser(Serial.read());
-
-  get_values();
-
-  if ((n - t) >= 1000)
+  if (state != ERROR)
   {
-#if DEBUGF_LED
-    digitalWrite(DEBUG_LED, HIGH);
+    n = millis();
+
+    parser(Serial.read());
+
+    get_values();
+
+    if ((n - t) >= 500)
+    {
+#if DEBUG_LED
+      digitalWrite(DEBUG_LED, HIGH);
 #endif
 
-    send_data();
+      send_data();
 
-#if DEBUGF_LED
-    digitalWrite(DEBUG_LED, LOW);
+#if DEBUG_LED
+      digitalWrite(DEBUG_LED, LOW);
 #endif
 
-    t = millis();
-  }
+      t = millis();
+    }
 
-  if (millis() - start <= 5000)
-  {
-    ASVmotors.pwmL = 7.5f;
-    ASVmotors.pwmR = 7.5f;
+    if (millis() - start <= 5000)
+    {
+      ASVmotors.pwmL = 7.5f;
+      ASVmotors.pwmR = 7.5f;
+    }
   }
+  else
+    Serial.println("ERROR!!!");
 
   actuate_motors();
 }
