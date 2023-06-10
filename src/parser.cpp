@@ -83,6 +83,8 @@ void parse_info(char *text)
     ASVmotors.pwmL = 7.5f;
     ASVmotors.pwmR = 7.5f;
 
+    state = SERVICE;
+
     isToSendData = true;
     memset(&text_tx, '\0', sizeof(text_tx));
     sprintf(text_tx, "$RSP,ACK,*");
@@ -97,6 +99,8 @@ void parse_info(char *text)
   {
     ASVmotors.pwmL = 7.5f;
     ASVmotors.pwmR = 7.5f;
+
+    state = READY;
 
     isToSendData = false;
     memset(&text_tx, '\0', sizeof(text_tx));
