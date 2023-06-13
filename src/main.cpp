@@ -47,12 +47,21 @@ void loop() {
   if (ASVmotors.pwmL != valorDesejadoL) {
     if(startTimeL == 0) {
       startTimeL = currentTime;
+    }   
+    boolean invertL; 
+    if(((valorDesejadoL > 0 && ASVmotors.pwmL < 0) || (valorDesejadoL < 0 && ASVmotors.pwmL > 0)) || stopL == false)
+    {
+      invertL = true;
+    }
+    else {
+      invertL = false;
     }
     
-    if (valorDesejadoL > 49 && valorDesejadoL < 51 && stopL == false) {
+    if (valorDesejadoL > -1 && valorDesejadoL < 1 && stopL == false && invertL == true) {
       stopL = true;
       start_pauseL = currentTime;
-      valorDesejadoL = 50;
+      valorDesejadoL = 0;
+      //Serial.println("Entrei na pausa\n");
     }    
 
     unsigned long elapsedTime_pauseL = currentTime - start_pauseL;
@@ -61,9 +70,9 @@ void loop() {
       stopL = false;
       startTimeL = currentTime;
       if(ASVmotors.pwmL < valorDesejadoL) {
-        valorDesejadoL = 48.9;
+        valorDesejadoL = -1.1;
       } else {
-        valorDesejadoL = 51.1;
+        valorDesejadoL = 1.1;
       }      
     }
 
@@ -82,22 +91,30 @@ void loop() {
     float mappedValueL = map(valorDesejadoL, -100.0, 100.0, 5.5, 9.5);
     // Ativar o motor L com o valor mapeado
     PWM_motorL->setPWM(PIN_motorL, 50, mappedValueL);
-    Serial.print("Motor Esquerdo \n");
+    /*Serial.print("Motor Esquerdo \n");
     Serial.print(startTimeL, 3);
     Serial.print(", ");
     Serial.print(valorDesejadoL, 3);
-    Serial.print("\n");
+    Serial.print("\n");*/
   }
 
   if (ASVmotors.pwmR != valorDesejadoR) {
     if (startTimeR == 0) {
       startTimeR = currentTime;
     }
+    boolean invertR;
+    if(((valorDesejadoR > 0 && ASVmotors.pwmR < 0) || (valorDesejadoR < 0 && ASVmotors.pwmR > 0)) || stopR == false)
+    {
+      invertR = true;
+    }
+    else {
+      invertR = false;
+    }
 
-    if (valorDesejadoR > 49 && valorDesejadoR < 51 && stopR == false) {
+    if (valorDesejadoR > -1 && valorDesejadoR < 1 && stopR == false && invertR == true) {
       stopR = true;
       start_pauseR = currentTime;
-      valorDesejadoR = 50;
+      valorDesejadoR = 0;
     }    
 
     unsigned long elapsedTime_pauseR = currentTime - start_pauseR;
@@ -106,9 +123,9 @@ void loop() {
       stopR = false;
       startTimeR = currentTime;
       if(ASVmotors.pwmR < valorDesejadoR) {
-        valorDesejadoR = 48.9;
+        valorDesejadoR = -1.1;
       } else {
-        valorDesejadoR = 51.1;
+        valorDesejadoR = 1.1;
       }    
     }
 
@@ -126,12 +143,13 @@ void loop() {
     // Mapear o valor para o intervalo desejado
     float mappedValueR = map(valorDesejadoR, -100.0, 100.0, 5.5, 9.5);
     // Ativar o motor R com o valor mapeado
-    PWM_motorR->setPWM(PIN_motorR, 50, mappedValueR);    
+    PWM_motorR->setPWM(PIN_motorR, 50, mappedValueR);  
     /*Serial.print("Motor Direito \n");
     Serial.print(startTimeR, 3);
     Serial.print(", ");
     Serial.print(valorDesejadoR, 3);
     Serial.print("\n");*/
+
   }
 
   // Outro código de processamento aqui
