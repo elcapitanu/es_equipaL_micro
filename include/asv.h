@@ -16,7 +16,10 @@ struct ASV_data
     float magX, magY, magZ;
     float yaw, pitch, roll;
     float temp;
-    //other sensors...
+    // Temp sensors
+    float temp1, temp2;
+    // Curr sensor
+    float cur;
 };
 
 extern struct ASV_data m_asv_data;

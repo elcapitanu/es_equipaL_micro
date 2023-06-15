@@ -150,33 +150,7 @@ void send_data()
   {
     if (isIMUconnected())
     {
-// #if USE_IMU
-//       memset(&text_tx, '\0', sizeof(text_tx));
-//       sprintf(text_tx, "$ACCEL,%f,%f,%f,*", m_asv_data.accelX, m_asv_data.accelY, m_asv_data.accelZ);
-//       usart_send_string(text_tx);
-// #if USE_CSUM
-//       usart_send_char(usart_CRC8(text_tx));
-// #endif
-//       usart_send_char('\n');
-//       delay(2);
-
-//       memset(&text_tx, '\0', sizeof(text_tx));
-//       sprintf(text_tx, "$GYRO,%f,%f,%f,*", m_asv_data.gyroX, m_asv_data.gyroY, m_asv_data.gyroZ);
-//       usart_send_string(text_tx);
-// #if USE_CSUM
-//       usart_send_char(usart_CRC8(text_tx));
-// #endif
-//       usart_send_char('\n');
-//       delay(2);
-
-//       memset(&text_tx, '\0', sizeof(text_tx));
-//       sprintf(text_tx, "$MAG,%f,%f,%f,*", m_asv_data.magX, m_asv_data.magY, m_asv_data.magZ);
-//       usart_send_string(text_tx);
-// #if USE_CSUM
-//       usart_send_char(usart_CRC8(text_tx));
-// #endif
-//       usart_send_char('\n');
-//       delay(2);
+      // #if USE_IMU
 
       memset(&text_tx, '\0', sizeof(text_tx));
       sprintf(text_tx, "$YPR,%f,%f,%f,*", m_asv_data.yaw, m_asv_data.pitch, m_asv_data.roll);
@@ -187,15 +161,42 @@ void send_data()
       usart_send_char('\n');
       delay(2);
 
-//       memset(&text_tx, '\0', sizeof(text_tx));
-//       sprintf(text_tx, "$TEMP,%f,*", m_asv_data.temp);
-//       usart_send_string(text_tx);
-// #if USE_CSUM
-//       usart_send_char(usart_CRC8(text_tx));
-// #endif
-//       usart_send_char('\n');
-//       delay(2);
-// #endif
+      //       memset(&text_tx, '\0', sizeof(text_tx));
+      //       sprintf(text_tx, "$ACCEL,%f,%f,%f,*", m_asv_data.accelX, m_asv_data.accelY, m_asv_data.accelZ);
+      //       usart_send_string(text_tx);
+      // #if USE_CSUM
+      //       usart_send_char(usart_CRC8(text_tx));
+      // #endif
+      //       usart_send_char('\n');
+      //       delay(2);
+
+      //       memset(&text_tx, '\0', sizeof(text_tx));
+      //       sprintf(text_tx, "$GYRO,%f,%f,%f,*", m_asv_data.gyroX, m_asv_data.gyroY, m_asv_data.gyroZ);
+      //       usart_send_string(text_tx);
+      // #if USE_CSUM
+      //       usart_send_char(usart_CRC8(text_tx));
+      // #endif
+      //       usart_send_char('\n');
+      //       delay(2);
+
+      //       memset(&text_tx, '\0', sizeof(text_tx));
+      //       sprintf(text_tx, "$MAG,%f,%f,%f,*", m_asv_data.magX, m_asv_data.magY, m_asv_data.magZ);
+      //       usart_send_string(text_tx);
+      // #if USE_CSUM
+      //       usart_send_char(usart_CRC8(text_tx));
+      // #endif
+      //       usart_send_char('\n');
+      //       delay(2);
+
+      //       memset(&text_tx, '\0', sizeof(text_tx));
+      //       sprintf(text_tx, "$TEMP,%f,*", m_asv_data.temp);
+      //       usart_send_string(text_tx);
+      // #if USE_CSUM
+      //       usart_send_char(usart_CRC8(text_tx));
+      // #endif
+      //       usart_send_char('\n');
+      //       delay(2);
+      // #endif
     }
     else
     {
@@ -208,5 +209,32 @@ void send_data()
       usart_send_char('\n');
       delay(2);
     }
+
+    memset(&text_tx, '\0', sizeof(text_tx));
+    sprintf(text_tx, "$TEMP1,%f*", m_asv_data.temp1);
+    usart_send_string(text_tx);
+#if USE_CSUM
+    usart_send_char(usart_CRC8(text_tx));
+#endif
+    usart_send_char('\n');
+    delay(2);
+
+    memset(&text_tx, '\0', sizeof(text_tx));
+    sprintf(text_tx, "$TEMP2,%f*", m_asv_data.temp2);
+    usart_send_string(text_tx);
+#if USE_CSUM
+    usart_send_char(usart_CRC8(text_tx));
+#endif
+    usart_send_char('\n');
+    delay(2);
+
+    memset(&text_tx, '\0', sizeof(text_tx));
+    sprintf(text_tx, "$CUR,%f*", m_asv_data.cur);
+    usart_send_string(text_tx);
+#if USE_CSUM
+    usart_send_char(usart_CRC8(text_tx));
+#endif
+    usart_send_char('\n');
+    delay(2);
   }
 }

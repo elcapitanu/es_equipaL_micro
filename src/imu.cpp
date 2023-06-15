@@ -20,13 +20,9 @@ bool init_imu()
         myICM.begin(Wire, 1);
 
         if (myICM.status != ICM_20948_Stat_Ok)
-        {
             delay(500);
-        }
         else
-        {
             initialized = true;
-        }
     }
 
     bool success = true;
@@ -81,21 +77,21 @@ void get_imu()
             m_asv_data.pitch = pitch;
             m_asv_data.roll = roll;
 
-            myICM.getAGMT();
+            // myICM.getAGMT();
 
-            m_asv_data.accelX = myICM.accX();
-            m_asv_data.accelY = myICM.accY();
-            m_asv_data.accelZ = myICM.accZ();
+            // m_asv_data.accelX = myICM.accX();
+            // m_asv_data.accelY = myICM.accY();
+            // m_asv_data.accelZ = myICM.accZ();
 
-            m_asv_data.gyroX = myICM.gyrX();
-            m_asv_data.gyroY = myICM.gyrY();
-            m_asv_data.gyroZ = myICM.gyrZ();
+            // m_asv_data.gyroX = myICM.gyrX();
+            // m_asv_data.gyroY = myICM.gyrY();
+            // m_asv_data.gyroZ = myICM.gyrZ();
 
-            m_asv_data.magX = myICM.magX();
-            m_asv_data.magY = myICM.magY();
-            m_asv_data.magZ = myICM.magZ();
+            // m_asv_data.magX = myICM.magX();
+            // m_asv_data.magY = myICM.magY();
+            // m_asv_data.magZ = myICM.magZ();
 
-            m_asv_data.temp = myICM.temp();
+            // m_asv_data.temp = myICM.temp();
         }
     }
 
