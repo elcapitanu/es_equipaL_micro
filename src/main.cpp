@@ -21,7 +21,7 @@ void setup()
 {
   Serial.begin(115200);
 
-#if DEBUGF_LED
+#if DEBUG_LED
   pinMode(DEBUG_LED, OUTPUT);
 #endif
 
@@ -48,15 +48,11 @@ void loop()
 
     get_values();
 
-    if ((n - t) >= 1000)
+    if ((n - t) >= 500)
     {
 #if DEBUG_LED
       digitalWrite(DEBUG_LED, HIGH);
 #endif
-
-      m_asv_data.temp1 += 0.01;
-      m_asv_data.temp2 += 0.01;
-      m_asv_data.cur += 0.01;
 
       send_data();
 
