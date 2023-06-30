@@ -20,12 +20,12 @@
 #define DEV_PAT (0)
 
 //! LED PIN for Debug
-#define DEBUG_LED (0)
+#define DEBUG_LED (25)
 
 //! PWM PIN for Motor R
-#define PIN_motorL (0)
+#define PIN_motorL (22)
 //! PWM PIN for Motor L
-#define PIN_motorR (1)
+#define PIN_motorR (21)
 //! PWM DEBUG
 #define PWM_DEBUG (0)
 
